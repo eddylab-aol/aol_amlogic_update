@@ -20,6 +20,9 @@ case $INPUT in
     
     apt update && apt install plexmediaserver -y
     
+    service plexmediaserver stop
+    service plexmediaserver start
+    
     
     # info message
     echo "[update] update to $TO finished..."
