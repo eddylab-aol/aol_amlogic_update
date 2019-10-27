@@ -38,7 +38,9 @@ EOF
     apt update
     update-command-not-found
     
+    echo "run system-rw..."
     system-rw
+    echo "write sleep 30 to init script..."
     cat <<EOF > /system/etc/init.ghost.linux
 #!/system/bin/sh
 sleep 30
