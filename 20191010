@@ -12,7 +12,7 @@ NC='\033[0m'
 YELLOW='\033[0;33m'
 
 # change log
-echo -e "\n${YELLOW}201920191010 to $TO update\n${NC}1. install bash-completion / command-not-found / dialog.\n2. fix aol boot time (add sleep 30)."
+echo -e "\n${YELLOW}20191010 to $TO update\n${NC}1. install bash-completion / command-not-found / dialog.\n2. fix aol boot time (add sleep 30)."
 
 read -p "[alert] apply update for $CUR_VER? (y / ctrl+c for exit.) : " INPUT
 case $INPUT in
