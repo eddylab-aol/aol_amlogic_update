@@ -38,6 +38,7 @@ EOF
     apt update
     update-command-not-found
     
+    system-rw
     cat <<EOF > /system/etc/init.ghost.linux
 #!/system/bin/sh
 sleep 30
