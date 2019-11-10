@@ -12,6 +12,17 @@ echo -e "\n20190704 to $TO update\n1. add plexmediaserver official repo.\n2. ple
 read -p "[alert] apply update for $CUR_VER? (y / ctrl+c for exit.) : " INPUT
 case $INPUT in
   y)
+    cat <<'EOF' > /etc/apt/sources.list
+# debian stretch repo
+deb http://httpredir.debian.org/debian/ stretch main contrib non-free
+deb-src http://httpredir.debian.org/debian/ stretch main contrib non-free
+# debian stretch-backports repo
+deb http://httpredir.debian.org/debian stretch-backports main contrib non-free
+deb-src http://httpredir.debian.org/debian stretch-backports main contrib non-free
+# debian stretch-updates repo
+deb http://httpredir.debian.org/debian stretch-updates main contrib non-free
+deb-src http://httpredir.debian.org/debian stretch-updates main contrib non-free
+EOF
     # write update scipt
     apt update && apt install curl -y
     
