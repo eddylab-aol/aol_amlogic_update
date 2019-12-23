@@ -19,6 +19,8 @@ case $INPUT in
   y)
     # write update scipt
     
+    system-rw
+    
     cat <<'EOF' > /system/etc/init.ghost.linux
 
 # wait android boot complete
