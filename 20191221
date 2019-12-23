@@ -12,7 +12,7 @@ NC='\033[0m'
 YELLOW='\033[0;33m'
 
 # change log
-echo -e "\n${YELLOW}20191221 to $TO update\n${NC}1. add device name to motd.sh."
+echo -e "\n${YELLOW}20191221 to $TO update\n${NC}1. add device name to motd.sh. \n2. re-appy 20191221 update (script error.)"
 
 read -p "[alert] apply update for $CUR_VER? (y / ctrl+c for exit.) : " INPUT
 case $INPUT in
@@ -42,6 +42,57 @@ echo "<NETWORK>"
 hostname -I
 echo ""
 
+EOF
+
+    system-rw
+    
+    cat <<'EOF' > /system/etc/init.ghost.linux
+# wait android boot complete
+while [ -z $(getprop sys.boot_completed) ]; do
+        sleep 1
+done
+if [ -f /sdcard/aolrun ]; then
+	if [[ ! -f /data/linux/dev/kmsg ]]; then
+	        # internal linux init script
+			ROOT=/data/linux
+			
+	        busybox sysctl -w net.ipv4.ip_forward=1
+			# make /dev /proc /sys
+	        busybox rm -rf $ROOT/dev/*
+			busybox mount -t proc proc $ROOT/proc
+	        busybox mount -t sysfs sys $ROOT/sys
+	        busybox mount -o bind /dev $ROOT/dev
+			busybox mount -o rw,nosuid,nodev,mode=1777 -t tmpfs tmpfs /dev/shm
+			busybox mount -o bind /dev/pts $ROOT/dev/pts
+			busybox ln -s /proc/self/fd/0 /dev/stdin
+			busybox ln -s ln -s /proc/self/fd/1 /dev/stdout
+			busybox ln -s /proc/self/fd/2 /dev/stderr
+			
+			# make /run
+	        busybox rm -rf $ROOT/run/*
+	        busybox mount -t tmpfs tmpfs $ROOT/run
+	        busybox mkdir $ROOT/run/lock
+			# android partitions bind
+			mount -o bind,rshared /mnt $ROOT/mnt
+	        busybox mount -o bind /system $ROOT/system
+	        busybox mount -o bind /data $ROOT/data
+	        busybox mkdir $ROOT/vendor
+	        busybox mount -o bind /vendor $ROOT/vendor
+			busybox mount -o bind /storage $ROOT/storage
+			
+			# start sysv-init script
+			busybox chroot $ROOT /bin/su root -c "/etc/init.d/rc 3" > /dev/null 2>&1
+			
+			# kodi hostname patch
+			LINUXHOSTNAME=`hostname`
+			if [ "`grep $LINUXHOSTNAME /system/etc/hosts -c`" == "0" ]; then
+				mount -o rw,remount /system
+				sed -i "1s/.*/127.0.0.1       localhost/g" /system/etc/hosts
+				sed -i "s/127.0.0.1       localhost/127.0.0.1       localhost $LINUXHOSTNAME/" /system/etc/hosts
+				mount -o ro,remount /system
+			fi
+	fi
+fi
 EOF
 
 
