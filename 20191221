@@ -12,7 +12,7 @@ NC='\033[0m'
 YELLOW='\033[0;33m'
 
 # change log
-echo -e "\n${YELLOW}20191103 to $TO update\n${NC}1. add device name to motd.sh."
+echo -e "\n${YELLOW}20191221 to $TO update\n${NC}1. add device name to motd.sh."
 
 read -p "[alert] apply update for $CUR_VER? (y / ctrl+c for exit.) : " INPUT
 case $INPUT in
