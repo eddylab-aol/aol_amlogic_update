@@ -19,6 +19,9 @@ case $INPUT in
   y)
     # write update scipt
     curl -s https://raw.githubusercontent.com/djjproject/android_over_linux/master/minidlna_1.2.1/minidlna-install.sh | bash
+    sed -i -e "s,/mnt/by-uuid,/mnt/media_rw,g" /etc/minidlna.conf
+    service minidlna stop
+    service minidlna start
 
     # info message
     echo -e "${YELLOW}[update] ${NC}update to $TO finished..."
