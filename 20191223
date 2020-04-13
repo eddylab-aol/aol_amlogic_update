@@ -19,7 +19,11 @@ case $INPUT in
   y)
     # write update scipt
     curl -s https://raw.githubusercontent.com/djjproject/android_over_linux/master/minidlna_1.2.1/minidlna-install.sh | bash
+    
+    echo -e "\n${YELLOW}change media dir to /mnt/media_rw...\n${NC}"
     sed -i -e "s,/mnt/by-uuid,/mnt/media_rw,g" /etc/minidlna.conf
+    
+    echo -e "\n${YELLOW}minidlna restart...\n${NC}"
     service minidlna stop
     service minidlna start
 
